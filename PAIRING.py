@@ -25,7 +25,7 @@ import anndata as ad
 import SEACells
 import qnorm
 
-from model_z1536_klnormcrvae_shxpr_vecont02mean_trideltemper5_nonoise_supcon10_delcell_delcontnoloss.pgan_vae_mapping_pr_disc2_xpr_basetf2 import *
+from trained_model.pgan_vae_mapping_pr_disc2_xpr_basetf2 import *
 
 def mean_pairwise_diff(term1, term2):
     len1 = term1.shape[0]
@@ -47,7 +47,7 @@ def mean_pairwise_diff_tf(term1, term2):
     return tf.reduce_mean(diff, axis=0, keepdims=True)
 
 class PAIRING:
-    def __init__(self, model_path='model_z1536_klnormcrvae_shxpr_vecont02mean_trideltemper5_nonoise_supcon10_delcell_delcontnoloss/model-1750.ckpt'):
+    def __init__(self, model_path='trained_model/model-1750.ckpt'):
         print('Data load...')
         train_data = pd.read_csv('l1000_data/p1shp2xpr/training_data_p1.csv', index_col=None)
         geneid = np.array(train_data.columns[2:]).astype('int')
@@ -173,7 +173,7 @@ class PAIRING:
             self.model.t_term6 = tf.compat.v1.placeholder(tf.float32, shape = [None, self.model.x_dim], name="t_term6") #control
             self.model.pertalpha = tf.compat.v1.placeholder(tf.float32, shape = [None, self.model.z_dim], name="pertalpha")
         
-        #VAE many sample - pairwise difference##########################
+        #VAE sample - pairwise difference##########################
         with tf.device('/cpu:0'):
             num_sample = 10
             t1_mean, t1_std, t1_encode = self.model.encoder(self.model.t_term1)
@@ -594,7 +594,7 @@ class PAIRING:
         ret = pd.DataFrame(data=summary_gen, columns=genesymbol)
         return whole_gen_ori, genesymbol, ret
     
-    def training(self, training_data=None, n_epoch=100, save_path='.', do_initialize=True):
+    def training(self, training_data='LincsL1000', n_epoch=100, save_path='.', do_initialize=True):
         """
         Model training
         trained model can be accessed through self.model
@@ -602,7 +602,7 @@ class PAIRING:
         Parameters
         ----------
         training_data : pd.DataFrame, optional
-            Training data. First two columns are cell and perturbation. Perturbation of control samples(==basal gene expression) should be "control". The default is None.
+            Training data. First two columns are cell and perturbation. Perturbation of control samples(==basal gene expression) should be "control". The default is 'LincsL1000'.
         n_epoch : int, optional
             Epoch. The default is 100.
         save_path : str, optional
@@ -615,7 +615,7 @@ class PAIRING:
         None.
 
         """
-        if training_data is not None:
+        if training_data != 'LincsL1000':
             self.train_data_info_use = training_data.iloc[:,:infoidx].values
             self.train_data_use = training_data.iloc[:,infoidx:].values
         else:

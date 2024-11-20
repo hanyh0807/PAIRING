@@ -5,7 +5,13 @@ Perturbation identifier to induce desired cell states using generative deep lear
 Please refer "requirements.txt".
 
 # Installation
-```pip install -r requirements.txt```
+```
+git clone https://github.com/hanyh0807/PAIRING.git
+cd PAIRING
+conda create -n pairing python=3.9.16
+conda activate pairing
+pip install -r requirements.txt
+```
 
 PAIRING has been tested in Ubuntu18.04 and Python 3.9.16.
 
