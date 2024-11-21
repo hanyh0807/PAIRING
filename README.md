@@ -4,6 +4,8 @@ Perturbation identifier to induce desired cell states using generative deep lear
 # Requirements
 Please refer "requirements.txt".
 
+For training from scratch, PAIRING requires at least 9GB of system memory and 5GB of GPU memory.
+
 # Installation
 ```
 git clone https://github.com/hanyh0807/PAIRING.git
